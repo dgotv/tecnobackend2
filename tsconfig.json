@@ -11,6 +11,6 @@
 		"sourceMap": true // Genera archivos .map para facilitar la depuración
 	},
 
-	"include": ["src"], // Archivos o directorios a incluir en la compilación
+	"include": ["src/**/*"], // Archivos o directorios a incluir en la compilación
 	"exclude": ["node_modules"] // Archivos o directorios a excluir de la compilación
 }
