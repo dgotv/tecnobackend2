@@ -1,0 +1,38 @@
+import pool from '../database/db_connect';
+import {Request, Response} from 'express';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt'; // Importa bcrypt
+
+export const login = async (req: Request, response: Response): Promise<Response> => {
+	const {nombre, clave} = req.body;
+
+	// Busca el usuario por nombre
+	const query = await pool.query('SELECT * FROM usuarios WHERE nombre = $1', [nombre]);
+	const user = query.rows[0];
+
+	if (user) {
+		// Compara la contraseña proporcionada con la almacenada en la base de datos
+		const isMatch = await bcrypt.compare(clave, user.clave);
+
+		if (isMatch) {
+			// Genera el token JWT si la contraseña es correcta
+			const accessToken = jwt.sign(user, `${process.env.CLAVE_JWT}`, {expiresIn: '1h'});
+			return response.status(200).json({accessToken});
+		} else {
+			return response.status(400).json('Contraseña incorrecta');
+		}
+	} else {
+		return response.status(400).json('Usuario no encontrado');
+	}
+};
+
+// Middleware de autorización
+const authorizeRole = (roles) => {
+	return (req, res, next) => {
+		if (roles.includes(req.user.rol)) {
+			next();
+		} else {
+			res.sendStatus(401);
+		}
+	};
+};
