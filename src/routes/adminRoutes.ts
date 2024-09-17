@@ -22,7 +22,6 @@ adminRoutes.post('/crear/producto', authenticateToken, authorizeRole(['administr
 adminRoutes.post('/celulares/crear', authenticateToken, authorizeRole(['administrador']), createCelular);
 adminRoutes.delete('/delete/celular/:id', authenticateToken, authorizeRole(['administrador']), deleteCelular);
 adminRoutes.put('/update/celular/:id', authenticateToken, authorizeRole(['administrador']), updateCelular);
-//adminRoutes.put('/update/celular/:id', updateCelular);
 
 adminRoutes.post('/computadoras/create', authenticateToken, authorizeRole(['administrador']), createComputadora);
 adminRoutes.delete('/delete/computadora/:id', authenticateToken, authorizeRole(['administrador']), deleteComputadora);

@@ -24,7 +24,6 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
 	interface JwtPayload {
 		rol: string;
 		id: number;
-		// Agrega otros campos según sea necesario
 	}
 
 	jwt.verify(token, `${process.env.ACCESS_TOKEN_SECRET}`, (err, decoded) => {

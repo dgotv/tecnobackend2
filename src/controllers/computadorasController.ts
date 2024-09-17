@@ -74,13 +74,11 @@ export const updateComputadora = async (req: Request, res: Response): Promise<Re
 	const {marca, modelo, precio, descripcion, imagen} = req.body;
 
 	try {
-		// Verificar si el pc con el ID existe
 		const computador: QueryResult = await pool.query('SELECT * FROM computadoras WHERE id = $1', [id]);
 		if (computador.rowCount === 0) {
 			return res.status(404).json({message: 'Computador no encontrado'});
 		}
 
-		// Actualizar el pc en la base de datos
 		const result: QueryResult = await pool.query(
 			'UPDATE computadoras SET marca = $1, modelo = $2, precio = $3, descripcion = $4, imagen = $5 WHERE id = $6',
 			[marca, modelo, precio, descripcion, imagen, id],
@@ -102,32 +100,3 @@ export const updateComputadora = async (req: Request, res: Response): Promise<Re
 		return res.status(500).json({message: 'Error interno del servidor'});
 	}
 };
-
-//este put no sirve
-
-/*export const nosirveComputadoraNo = async (req: Request, res: Response): Promise<Response> => {
-	const id = parseInt(req.params.id);
-	const {computadorarMarca, computadoraModelo, computadoraPrecio, computadoraDescripcion, computadoraImagen} = req.body;
-
-	try {
-		await pool.query(
-			'UPDATE computadoras SET marca = $1, modelo = $2, precio =$3, descripcion = $4, imagen = $5 WHERE id = $6',
-			[computadorarMarca, computadoraModelo, computadoraPrecio, computadoraDescripcion, computadoraImagen, id],
-		);
-
-		return res.json({
-			message: 'computadora actualizado con exito.',
-			computadora: {
-				id,
-				computadorarMarca,
-				computadoraModelo,
-				computadoraPrecio,
-				computadoraDescripcion,
-				computadoraImagen,
-			},
-		});
-	} catch (error) {
-		console.error(error);
-		return res.status(500).json('Internal Server Error');
-	}
-};*/
